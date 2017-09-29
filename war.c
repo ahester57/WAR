@@ -59,16 +59,18 @@ int playwar(int* p1, int* p2) {
 	int tp1 = 0, tp2 = 0;
 	int battlewinner;
 	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
-		usleep(1000);
+		usleep(200000);
 		c1 = p1[0];
 		c2 = p2[0];
-		if (tp1 % 10 == 0)
+		if (tp1 % 10 == 0) {
 			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
+			sleep(1);
+		}
 		fprintf(stderr, "%d\tvs\t%d\n", c1, c2);
-		if (c1 == 0 || ncards2  < 2)
-			return 1;
-		if (c2 == 0 || ncards1 < 2)
+		if (c1 == 0 || ncards1  < 1)
 			return 2;
+		if (c2 == 0 || ncards2 < 1)
+			return 1;
 
 		showbattle(c1, c2);
 		battlewinner = maxx(c1, c2);
@@ -111,11 +113,21 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	c1 = p1[iofwar];
 	c2 = p2[iofwar];
 	if (c1 == 0) {
-		*ncards1 = 0;	
+		for (i = 0; i < iofwar+1; i++) {
+			p2[*ncards2] = p1[i];
+			(*ncards2)++;
+			p1[i] = 0;
+			*ncards1 = 0;	
+		}
 		return 2;
 	}
 	if (c2 == 0) {
-		*ncards2 = 0;
+		for (i = 0; i < iofwar+1; i++) {
+			p1[*ncards1] = p2[i];
+			(*ncards1)++;
+			p2[i] = 0;
+			*ncards2 = 0;
+		}
 		return 1;
 	}
 	battlewinner = maxx(c1, c2);
@@ -128,7 +140,7 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 			p2[i] = 0;
 			(*ncards2)--;	
 		}
-		fprintf(stderr, "p1 takes\n");
+		fprintf(stderr, "Player -1- takes\n");
 		return 1;
 	} else if (battlewinner == c2) {
 		// p2 won
@@ -139,7 +151,7 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 			p1[i] = 0;
 			(*ncards1)--;	
 		}
-		fprintf(stderr, "p2 takes\n");
+		fprintf(stderr, "Player -2- takes\n");
 		return 2;
 	} else {
 		// war again

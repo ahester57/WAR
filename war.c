@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include "cards.h"
 #define NUMCARDS 52
 
 // Austin Hester
@@ -18,6 +19,17 @@ void shift(int start, int* p);
 int maxx(int a, int b);
 
 int main(int argc, char** argv) {
+	int r, f;
+	char** asdf;
+	for (f = 2; f < 15; f++) {
+	asdf = getcard(f);
+	for (r < 0; r < 8; r++) {
+
+	//	fprintf(stderr, asdf[r]);
+	}
+	r = 0;
+	free(asdf);
+	}
 	int cards[NUMCARDS];
 	int *p1, *p2;
 	p1 = (int*)calloc(NUMCARDS, sizeof(int));
@@ -53,11 +65,12 @@ int playwar(int* p1, int* p2) {
 		if (tp1 % 10 == 0)
 			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
 		fprintf(stderr, "%d\tvs\t%d\n", c1, c2);
-		if (c1 == 0 || ncards2  < 5)
+		if (c1 == 0 || ncards2  < 2)
 			return 1;
-		if (c2 == 0 || ncards1 < 5)
+		if (c2 == 0 || ncards1 < 2)
 			return 2;
 
+		showbattle(c1, c2);
 		battlewinner = maxx(c1, c2);
 		if (battlewinner == c1) {
 			// player 1 won
@@ -75,6 +88,7 @@ int playwar(int* p1, int* p2) {
 		} else {
 			// war ensues
 			war(p1, &ncards1, p2, &ncards2, 1);
+			sleep(2);
 		}	
 		shift(0, p1);
 		shift(0, p2);	
@@ -93,8 +107,19 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	sleep(1);
 	int battlewinner, i;
 	int iofwar = iter * 4;
-	battlewinner = maxx(p1[iofwar], p2[iofwar]);
-	if (battlewinner == p1[iofwar]) {
+	int c1, c2;
+	c1 = p1[iofwar];
+	c2 = p2[iofwar];
+	if (c1 == 0) {
+		*ncards1 = 0;	
+		return 2;
+	}
+	if (c2 == 0) {
+		*ncards2 = 0;
+		return 1;
+	}
+	battlewinner = maxx(c1, c2);
+	if (battlewinner == c1) {
 		// p1 won
 		for (i = 0; i < iofwar+1; i++) {
 			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);
@@ -105,7 +130,7 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 		}
 		fprintf(stderr, "p1 takes\n");
 		return 1;
-	} else if (battlewinner == p2[iofwar]) {
+	} else if (battlewinner == c2) {
 		// p2 won
 		for (i = 0; i < iofwar+1; i++) {
 			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);

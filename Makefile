@@ -1,12 +1,13 @@
-FLAGS = -lm
+FLAGS = -lm 
 
 default: war
 
-%.o: %.c
-	gcc $(FLAGS) -c $<
+%.o: %.c cards.h
+	gcc -w $(FLAGS) -c $<
 
-war: war.o
-	gcc $(FLAGS) $< -o $@
+war: war.o cards.o
+	gcc -w $(FLAGS) cards.o $< -o $@
 
 clean:
 	-rm -f *.o
+	-rm -f log.out

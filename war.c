@@ -8,9 +8,9 @@
 // Austin Hester
 // WAR
 
-//int playwar();
 void shuffle(int* cards);
 void splitdeck(int* cards, int* p1, int* p2);
+int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter);
 int playwar(int* p1, int* p2);
 int findfirstzero(int* p);
 void pushzerostoback(int ncards, int* p);
@@ -39,6 +39,90 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
+int playwar(int* p1, int* p2) {
+	int i = 0, ncards1, ncards2;
+	ncards1 = NUMCARDS/2;
+	ncards2 = ncards1;
+	int c1, c2;
+	int tp1 = 0, tp2 = 0;
+	int battlewinner;
+	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
+		usleep(1000);
+		c1 = p1[0];
+		c2 = p2[0];
+		if (tp1 % 10 == 0)
+			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
+		fprintf(stderr, "%d\tvs\t%d\n", c1, c2);
+		if (c1 == 0 || ncards2  < 5)
+			return 1;
+		if (c2 == 0 || ncards1 < 5)
+			return 2;
+
+		battlewinner = maxx(c1, c2);
+		if (battlewinner == c1) {
+			// player 1 won
+			p1[ncards1] = c2;
+			ncards1++;
+			p2[0] = 0;
+			ncards2--;	
+		} else if (battlewinner == c2) {
+			// player 2 won
+			p2[ncards2] = c1;
+			ncards2++;
+			p1[0] = 0;
+			ncards1--;	
+
+		} else {
+			// war ensues
+			war(p1, &ncards1, p2, &ncards2, 1);
+		}	
+		shift(0, p1);
+		shift(0, p2);	
+		tp1++;
+		tp2++;
+
+		pushzerostoback(ncards1, p1);		
+		pushzerostoback(ncards2, p2);		
+	}	
+	return 0;
+}
+
+// returns winner if game ends, else 0
+int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
+	fprintf(stderr, "WAR!!!\n");
+	sleep(1);
+	int battlewinner, i;
+	int iofwar = iter * 4;
+	battlewinner = maxx(p1[iofwar], p2[iofwar]);
+	if (battlewinner == p1[iofwar]) {
+		// p1 won
+		for (i = 0; i < iofwar+1; i++) {
+			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);
+			p1[*ncards1] = p2[i];
+			(*ncards1)++;
+			p2[i] = 0;
+			(*ncards2)--;	
+		}
+		fprintf(stderr, "p1 takes\n");
+		return 1;
+	} else if (battlewinner == p2[iofwar]) {
+		// p2 won
+		for (i = 0; i < iofwar+1; i++) {
+			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);
+			p2[*ncards2] = p1[i];
+			(*ncards2)++;
+			p1[i] = 0;
+			(*ncards1)--;	
+		}
+		fprintf(stderr, "p2 takes\n");
+		return 2;
+	} else {
+		// war again
+		return war(p1, ncards1, p2, ncards2, iter+1);
+	}
+	return 0;
+} 
+
 void shuffle(int* cards) {
 	struct timespec tm;
 	clock_gettime(CLOCK_MONOTONIC, &tm);
@@ -66,51 +150,6 @@ void splitdeck(int* cards, int* p1, int* p2) {
 	return;
 }
 
-int playwar(int* p1, int* p2) {
-	int i = 0, ncards1, ncards2;
-	ncards1 = NUMCARDS/2;
-	ncards2 = ncards1;
-	int c1, c2;
-	int tp1 = 0, tp2 = 0;
-	int battlewinner;
-	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
-		c1 = p1[0];
-		c2 = p2[0];
-
-		if (c1 == 0 || ncards2 < 5)
-			return 1;
-		if (c2 == 0 || ncards1 < 5)
-			return 2;
-
-		battlewinner = maxx(c1, c2);
-		if (battlewinner == c1) {
-			// player 1 won
-			p1[ncards1] = c2;
-			ncards1++;
-			p2[0] = 0;
-			ncards2--;	
-		} else if (battlewinner == c2) {
-			// player 2 won
-			p2[ncards2] = c1;
-			ncards2++;
-			p1[0] = 0;
-			ncards1--;	
-
-		} else {
-			// war ensues
-
-		}	
-		fprintf(stderr, "whoa nelly shifting\n");
-		shift(0, p1);
-		shift(0, p2);	
-		tp1++;
-		tp2++;
-
-		pushzerostoback(ncards1, p1);		
-		pushzerostoback(ncards2, p2);		
-	}	
-	return 0;
-}
 
 int findfirstzero(int* p) {
 	int i;
@@ -125,7 +164,8 @@ void pushzerostoback(int ncards, int* p) {
 	int i, j;
 	for (i = 0; i < NUMCARDS - ncards + 1; i++) { // for however many zeros
 		j = findfirstzero(p);
-		shift(j, p);	
+		if (j != -1)
+			shift(j, p);	
 	}
 	return;
 }

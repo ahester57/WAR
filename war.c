@@ -33,9 +33,9 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "%d\t%d\n", p1[i], p2[i]);
 	} 
 	FILE* fp;
-	fp = fopen("./winners.log", "a+");
 	int winner = playwar(p1, p2);
 	fprintf(stderr, "winner player %d\n", winner);
+	fp = fopen("./winners.log", "a+");
 	if (fp != NULL)
 		fprintf(fp, "%d\n", winner);
 	fclose(fp);

@@ -52,13 +52,12 @@ int playwar(int* p1, int* p2) {
 	ncards1 = NUMCARDS/2;
 	ncards2 = ncards1;
 	int c1, c2;
-	int tp1 = 0, tp2 = 0;
 	int battlewinner;
 	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
 		usleep(400000);
 		c1 = p1[0];
 		c2 = p2[0];
-		if (tp1 % 10 == 0) {
+		if (i % 10 == 0) {
 			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
 			sleep(1);
 		}
@@ -90,9 +89,7 @@ int playwar(int* p1, int* p2) {
 		}	
 		shift(0, p1);
 		shift(0, p2);	
-		tp1++;
-		tp2++;
-
+		i++;
 		pushzerostoback(ncards1, p1);		
 		pushzerostoback(ncards2, p2);		
 	}	
@@ -215,7 +212,6 @@ void shift(int start, int* p) {
 
 // for war, 2 <= a, b <= 14, return 0 on match
 int maxx(int a, int b) {
-	int max;
 	if (a < b) return b;
 	else if (a > b) return a;
 	return 0;

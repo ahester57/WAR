@@ -1,13 +1,20 @@
-FLAGS = -lm 
+# Makefile improved by Basile Starynkevitch
 
-default: war
+CC= gcc
+CFLAGS= -Wall -g
+LDLIBS= -lm
+SOURCES= cards.c war.c
+# or perhaps SOURCES= $(wildcard *.c)
 
-%.o: %.c cards.h
-	gcc -w $(FLAGS) -c $<
+OBJECTS= $(patsubst %.c,%.o,$(SOURCES))
 
-war: war.o cards.o
-	gcc -w $(FLAGS) cards.o $< -o $@
+.PHONY: all clean
+
+all: war
+
+war: $(OBJECTS)
+
+$(OBJECTS): cards.h
 
 clean:
-	-rm -f *.o
-	-rm -f log.out
+	$(RM) $(OBJECTS) war

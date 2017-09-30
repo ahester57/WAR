@@ -14,7 +14,7 @@ void showbattle(int c, int d) {
 		sprintf(both[i], "%s\t%s\n", cc[i], dd[i]);
 	}
 	for (i = 0; i < 9; i++) {
-		fprintf(stderr, both[i]);
+		fprintf(stderr, "%s", both[i]);
 	}
 	free(cc);
 	free(dd);
@@ -29,7 +29,6 @@ char** getcard(int cnum) {
 		card[i] = (char*)malloc(56*sizeof(char));	
 	}
 	char* s;
-	char num;
 	struct timespec tm;
 	clock_gettime(CLOCK_MONOTONIC, &tm);
 	srand((unsigned)(tm.tv_sec ^ tm.tv_nsec ^ (tm.tv_nsec >> 31)));
@@ -49,10 +48,8 @@ char** getcard(int cnum) {
 			break;
 		default:
 			s = "?";
-	
 	}
 	switch (cnum) {
-		num = 's';	
 		case 2:
 			sprintf(card[0],"\u250C-------\u2510");
 			sprintf(card[1],"\u25022      \u2502");

@@ -1,4 +1,5 @@
 *.o
+a.out
 war
 war.exe
 winners.log

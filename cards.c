@@ -155,7 +155,7 @@ char** getcard(int cnum) {
 			sprintf(card[2],"\u2502       \u2502");
 			sprintf(card[3],"\u2502       \u2502");
 			sprintf(card[4],"\u2502 JACK  \u2502");
-			sprintf(card[5],"\u2502       \u2502");
+			sprintf(card[5],"%s%s%s","\u2502   ",s,"   \u2502");
 			sprintf(card[6],"\u2502       \u2502");
 			sprintf(card[7],"\u2502      J\u2502");
 			sprintf(card[8],"\u2514-------\u2518");
@@ -166,7 +166,7 @@ char** getcard(int cnum) {
 			sprintf(card[2],"\u2502       \u2502");
 			sprintf(card[3],"\u2502       \u2502");
 			sprintf(card[4],"\u2502 QUEEN \u2502");
-			sprintf(card[5],"\u2502       \u2502");
+			sprintf(card[5],"%s%s%s","\u2502   ",s,"   \u2502");
 			sprintf(card[6],"\u2502       \u2502");
 			sprintf(card[7],"\u2502      Q\u2502");
 			sprintf(card[8],"\u2514-------\u2518");
@@ -177,7 +177,7 @@ char** getcard(int cnum) {
 			sprintf(card[2],"\u2502       \u2502");
 			sprintf(card[3],"\u2502       \u2502");
 			sprintf(card[4],"\u2502 KING  \u2502");
-			sprintf(card[5],"\u2502       \u2502");
+			sprintf(card[5],"%s%s%s","\u2502   ",s,"   \u2502");
 			sprintf(card[6],"\u2502       \u2502");
 			sprintf(card[7],"\u2502      K\u2502");
 			sprintf(card[8],"\u2514-------\u2518");

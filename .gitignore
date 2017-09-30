@@ -1,2 +1,4 @@
 *.o
 war
+war.exe
+winners.log

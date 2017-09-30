@@ -19,17 +19,6 @@ void shift(int start, int* p);
 int maxx(int a, int b);
 
 int main(int argc, char** argv) {
-	int r, f;
-	char** asdf;
-	for (f = 2; f < 15; f++) {
-	asdf = getcard(f);
-	for (r < 0; r < 8; r++) {
-
-	//	fprintf(stderr, asdf[r]);
-	}
-	r = 0;
-	free(asdf);
-	}
 	int cards[NUMCARDS];
 	int *p1, *p2;
 	p1 = (int*)calloc(NUMCARDS, sizeof(int));
@@ -43,8 +32,14 @@ int main(int argc, char** argv) {
 	for (i = 0; i < NUMCARDS; i++) {
 		fprintf(stderr, "%d\t%d\n", p1[i], p2[i]);
 	} 
+	FILE* fp;
+	fp = fopen("./winners.log", "a+");
 	int winner = playwar(p1, p2);
 	fprintf(stderr, "winner player %d\n", winner);
+	if (fp != NULL)
+		fprintf(fp, "%d\n", winner);
+	fclose(fp);
+	sleep(2);
 	for (i = 0; i < NUMCARDS; i++) {
 		fprintf(stderr, "%d\t%d\n", p1[i], p2[i]);
 	} 
@@ -59,7 +54,7 @@ int playwar(int* p1, int* p2) {
 	int tp1 = 0, tp2 = 0;
 	int battlewinner;
 	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
-		usleep(200000);
+		usleep(400000);
 		c1 = p1[0];
 		c2 = p2[0];
 		if (tp1 % 10 == 0) {

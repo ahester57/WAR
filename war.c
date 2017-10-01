@@ -54,12 +54,12 @@ int playwar(int* p1, int* p2) {
 	int c1, c2;
 	int battlewinner;
 	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
-		usleep(400000);
+		//usleep(100000);
 		c1 = p1[0];
 		c2 = p2[0];
 		if (i % 10 == 0) {
 			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
-			sleep(1);
+			//sleep(1);
 		}
 		fprintf(stderr, "%d\tvs\t%d\n", c1, c2);
 		if (c1 == 0 || ncards1  < 1)
@@ -85,7 +85,7 @@ int playwar(int* p1, int* p2) {
 		} else {
 			// war ensues
 			war(p1, &ncards1, p2, &ncards2, 1);
-			sleep(2);
+			//sleep(2);
 		}	
 		shift(0, p1);
 		shift(0, p2);	
@@ -102,26 +102,43 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	sleep(1);
 	int battlewinner, i;
 	int iofwar = iter * 4;
+	if (iofwar > NUMCARDS-1)
+		return -1;
 	int c1, c2;
 	c1 = p1[iofwar];
 	c2 = p2[iofwar];
 	if (c1 == 0) {
-		for (i = 0; i < iofwar+1; i++) {
-			p2[*ncards2] = p1[i];
-			(*ncards2)++;
-			p1[i] = 0;
-			*ncards1 = 0;	
+		int t1 = findfirstzero(p1);
+		if (p1[t1-1] == 0) {
+			for (i = 0; i < t1-1; i++) {
+				if (p1[i] != 0) {
+					p2[*ncards2] = p1[i];
+					(*ncards2)++;
+					p1[i] = 0;
+					*ncards1 = 0;	
+				}
+			}
+			return 2;
+		} else {
+			c1 = p1[t1-1];
 		}
 		return 2;
 	}
 	if (c2 == 0) {
-		for (i = 0; i < iofwar+1; i++) {
-			p1[*ncards1] = p2[i];
-			(*ncards1)++;
-			p2[i] = 0;
-			*ncards2 = 0;
+		int t2 = findfirstzero(p1);
+		if (p2[t2-1] == 0) {
+			for (i = 0; i < t2-1; i++) {
+				if (p2[i] != 0) {
+					p1[*ncards1] = p2[i];
+					(*ncards1)++;
+					p2[i] = 0;
+					*ncards2 = 0;
+				}
+			}
+			return 1;
+		} else {
+			c2 = p2[t2-1];
 		}
-		return 1;
 	}
 	battlewinner = maxx(c1, c2);
 	if (battlewinner == c1) {
@@ -152,6 +169,20 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	}
 	return 0;
 } 
+
+int testwar(int* p1) {
+	int i;
+	int t1 = findfirstzero(p1);
+	if (p1[t1-1] == 0) {
+		for (i = 0; i < t1-1; i++) {
+			if (p1[i] != 0) {
+			}
+		}
+		return 2;
+	} else {
+		return 0;
+	}
+}
 
 void shuffle(int* cards) {
 	struct timespec tm;

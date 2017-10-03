@@ -54,14 +54,10 @@ int playwar(int* p1, int* p2) {
 	int c1, c2;
 	int battlewinner;
 	while (ncards1 < NUMCARDS-1 || ncards2 < NUMCARDS - 1) {
-		//usleep(100000);
+		usleep(100000);
 		c1 = p1[0];
 		c2 = p2[0];
-		if (i % 10 == 0) {
-			fprintf(stderr, "p1:%d c\np2:%d c\n", ncards1, ncards2);
-			//sleep(1);
-		}
-		fprintf(stderr, "%d\tvs\t%d\n", c1, c2);
+		fprintf(stderr, "%d\tvs\t%d\n", ncards1, ncards2);
 		if (c1 == 0 || ncards1  < 1)
 			return 2;
 		if (c2 == 0 || ncards2 < 1)
@@ -85,7 +81,7 @@ int playwar(int* p1, int* p2) {
 		} else {
 			// war ensues
 			war(p1, &ncards1, p2, &ncards2, 1);
-			//sleep(2);
+			sleep(2);
 		}	
 		shift(0, p1);
 		shift(0, p2);	
@@ -144,7 +140,11 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	if (battlewinner == c1) {
 		// p1 won
 		for (i = 0; i < iofwar+1; i++) {
-			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);
+			fprintf(stderr, "\t%d vs %d\n", p1[0], p2[i]);
+			shift(0, p1);
+		}
+		pushzerostoback(*ncards1, p1);
+		for (i = 0; i < iofwar+1; i++) {
 			p1[*ncards1] = p2[i];
 			(*ncards1)++;
 			p2[i] = 0;
@@ -155,7 +155,11 @@ int war(int* p1, int* ncards1, int* p2, int* ncards2, int iter) {
 	} else if (battlewinner == c2) {
 		// p2 won
 		for (i = 0; i < iofwar+1; i++) {
-			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[i]);
+			fprintf(stderr, "\t%d vs %d\n", p1[i], p2[0]);
+			shift(0, p2);
+		}
+		pushzerostoback(*ncards2, p2);
+		for (i = 0; i < iofwar+1; i++) {
 			p2[*ncards2] = p1[i];
 			(*ncards2)++;
 			p1[i] = 0;

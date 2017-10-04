@@ -3,7 +3,7 @@
 CC= gcc
 CFLAGS= -Wall -g
 LDLIBS= -lm
-SOURCES= cards.c war.c
+SOURCES= cards.c war.c deck.c
 # or perhaps SOURCES= $(wildcard *.c)
 
 OBJECTS= $(patsubst %.c,%.o,$(SOURCES))
@@ -14,7 +14,7 @@ all: war
 
 war: $(OBJECTS)
 
-$(OBJECTS): cards.h
+$(OBJECTS): cards.h deck.h
 
 clean:
 	$(RM) $(OBJECTS) war

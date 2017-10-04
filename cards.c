@@ -4,7 +4,7 @@
 #include <time.h>
 #include "cards.h"
 
-void showbattle(int c, int d) {
+void showbattle(card_t c, card_t d) {
 	char** cc = getcard(c);
 	char** dd = getcard(d);
 	char** both = (char**)malloc(10*sizeof(char*));
@@ -21,7 +21,7 @@ void showbattle(int c, int d) {
 	free(both);
 }
 
-char** getcard(int cnum) {
+char** getcard(card_t cnum) {
 	char **card;
 	card = (char**)malloc(10*sizeof(char*));
 	int i;
@@ -33,8 +33,8 @@ char** getcard(int cnum) {
 	struct timespec tm;
 	clock_gettime(CLOCK_MONOTONIC, &tm);
 	srand((unsigned)(tm.tv_sec ^ tm.tv_nsec ^ (tm.tv_nsec >> 31)));
-	int suite = rand() % 4;
-	switch (suite) {
+
+	switch (cnum.suit) {
 		case 0:
 			s = "\u2660";	
 			break;
@@ -50,7 +50,7 @@ char** getcard(int cnum) {
 		default:
 			s = "?";
 	}
-	switch (cnum) {
+	switch (cnum.rank) {
 		case 2:
 			sprintf(card[0],"\u250C-------\u2510");
 			sprintf(card[1],"%s%s%s",l,"2      ",l);

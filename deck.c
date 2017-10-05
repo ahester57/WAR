@@ -5,7 +5,10 @@
 
 static card_t nocard = {0, 0};
 
-void shuffle(card_t* cards) {
+// shuffles deck 
+void
+shuffle(card_t* cards)
+{
 	struct timespec tm;
 	clock_gettime(CLOCK_MONOTONIC, &tm);
 	srand((unsigned)(tm.tv_sec ^ tm.tv_nsec ^ (tm.tv_nsec >> 31)));
@@ -21,7 +24,10 @@ void shuffle(card_t* cards) {
 	return;
 }
 
-void splitdeck(card_t* cards, card_t* p1, card_t* p2) {
+// splits deck in half
+void
+splitdeck(card_t* cards, card_t* p1, card_t* p2)
+{
 	int i, j;
 	j = NUMCARDS - 1;
 	for (i = 0; i < NUMCARDS/2; i++) {
@@ -36,8 +42,10 @@ void splitdeck(card_t* cards, card_t* p1, card_t* p2) {
 	return;
 }
 
-
-int findfirstzero(card_t* p) {
+// returns index of first zero
+int
+findfirstzero(card_t* p)
+{
 	int i;
 	for (i = 0; i < NUMCARDS; i++) {
 		if (p[i].rank == 0)
@@ -46,7 +54,10 @@ int findfirstzero(card_t* p) {
 	return -1;
 }
 
-void pushzerostoback(int ncards, card_t* p) {
+// pushes all zeros to back of player's hand 
+void
+pushzerostoback(int ncards, card_t* p)
+{
 	int i, j;
 	for (i = 0; i < NUMCARDS - ncards + 1; i++) { // for however many zeros
 		j = findfirstzero(p);
@@ -56,7 +67,10 @@ void pushzerostoback(int ncards, card_t* p) {
 	return;
 }
 
-void shift(int start, card_t* p) {
+// puts head at end, shifts rest up
+void
+shift(int start, card_t* p)
+{
 	int i;
 	card_t temp = p[start];
 	for (i = start; i < NUMCARDS-1; i++) {

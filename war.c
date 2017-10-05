@@ -16,17 +16,22 @@ int maxx(int a, int b);
 
 static card_t nocard = {0, 0};
 
-int main(int argc, char** argv) {
+int
+main(int argc, char** argv)
+{
 	card_t cards[NUMCARDS];
 	card_t *p1, *p2;
-	p1 = (card_t*)malloc(NUMCARDS*sizeof(card_t));
-	p2 = (card_t*)malloc(NUMCARDS*sizeof(card_t));
+	if ((p1 = (card_t*)malloc(NUMCARDS*sizeof(card_t))) == (void*)NULL)
+		return 1;
+	if ((p2 = (card_t*)malloc(NUMCARDS*sizeof(card_t))) == (void*)NULL)
+		return 1;
 	int i;
 	for (i = 0; i < NUMCARDS; i++) {
 		cards[i].rank = floor((double)(i + 8) / (double)4);	
 		cards[i].suit = i % 4;
 	} 
 	shuffle(cards);	
+	shuffle(cards);
 	splitdeck(cards, p1, p2);
 	for (i = 0; i < NUMCARDS; i++) {
 		fprintf(stderr, "%d\t%d\n", p1[i].rank, p2[i].rank);
@@ -46,7 +51,10 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-int playwar(card_t* p1, card_t* p2) {
+// start the game given 2 players, returns winner
+int
+playwar(card_t* p1, card_t* p2)
+{
 	int i = 0, ncards1, ncards2;
 	ncards1 = NUMCARDS/2;
 	ncards2 = ncards1;
@@ -92,8 +100,10 @@ int playwar(card_t* p1, card_t* p2) {
 	return 0;
 }
 
-// returns winner if game ends, else 0
-int war(card_t* p1, int* ncards1, card_t* p2, int* ncards2, int iter) {
+// returns winner if game ends, else 0, -1 on "entire-deck war"
+int
+war(card_t* p1, int* ncards1, card_t* p2, int* ncards2, int iter)
+{
 	fprintf(stderr, "WAR!!!\n");
 	sleep(1);
 	int battlewinner, i;
@@ -174,7 +184,10 @@ int war(card_t* p1, int* ncards1, card_t* p2, int* ncards2, int iter) {
 	return 0;
 } 
 
-int predictwinner(card_t* p1, card_t* p2) {
+// adds up each players cards, returns maxx
+int
+predictwinner(card_t* p1, card_t* p2)
+{
 	int sum1 = 0, sum2 = 0;
 	int i;
 	for (i = 0; i < NUMCARDS/2; i++) {
@@ -188,7 +201,9 @@ int predictwinner(card_t* p1, card_t* p2) {
 }
 
 // for war, 2 <= a, b <= 14, return 0 on match
-int maxx(int a, int b) {
+int
+maxx(int a, int b)
+{
 	if (a < b) return b;
 	else if (a > b) return a;
 	return 0;

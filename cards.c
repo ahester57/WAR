@@ -4,13 +4,20 @@
 #include <time.h>
 #include "cards.h"
 
-void showbattle(card_t c, card_t d) {
+// displays both cards
+void
+showbattle(card_t c, card_t d)
+{
 	char** cc = getcard(c);
 	char** dd = getcard(d);
 	char** both = (char**)malloc(10*sizeof(char*));
+	if (both == (void*)NULL)
+		return;	
 	int i;
 	for (i = 0; i < 9; i++) {
 		both[i] = (char*)malloc(56*sizeof(char));
+		if (both[i] == NULL)
+			return;
 		sprintf(both[i], "%s\t%s\n", cc[i], dd[i]);
 	}
 	for (i = 0; i < 9; i++) {
@@ -21,12 +28,17 @@ void showbattle(card_t c, card_t d) {
 	free(both);
 }
 
-char** getcard(card_t cnum) {
+// builds char array of chosen card
+char**
+getcard(card_t cnum)
+{
 	char **card;
-	card = (char**)malloc(10*sizeof(char*));
+	if ((card = (char**)malloc(10*sizeof(char*))) == NULL)
+		return (void*)-1;
 	int i;
 	for (i = 0; i < 9; i++) {
-		card[i] = (char*)malloc(56*sizeof(char));	
+		if ((card[i] = (char*)malloc(56*sizeof(char))) == NULL)
+			return (void*)-1;
 	}
 	char* s;
 	char* l = "\u2502";

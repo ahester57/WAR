@@ -14,11 +14,9 @@ int playwar(card_t* p1, card_t* p2);
 int predictwinner(card_t* p1, card_t* p2);
 int maxx(int a, int b);
 
-static card_t nocard;
+static card_t nocard = {0, 0};
 
 int main(int argc, char** argv) {
-	nocard.rank = 0;
-	nocard.suit = 0;
 	card_t cards[NUMCARDS];
 	card_t *p1, *p2;
 	p1 = (card_t*)malloc(NUMCARDS*sizeof(card_t));

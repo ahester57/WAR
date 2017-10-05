@@ -110,8 +110,8 @@ char** getcard(card_t cnum) {
 			sprintf(card[0],"\u250C-------\u2510");
 			sprintf(card[1],"%s%s%s",l,"7      ",l);
 			sprintf(card[2],"%s%s%s%s%s","\u2502 ",s,"   ",s," \u2502");
-			sprintf(card[3],"%s%s%s",l,"       ",l);
-			sprintf(card[4],"%s%s%s%s%s%s%s","\u2502 ",s," ",s," ",s," \u2502");
+			sprintf(card[3],"%s%s%s","\u2502   ",s,"   \u2502");
+			sprintf(card[4],"%s%s%s%s%s","\u2502 ",s,"   ",s," \u2502");
 			sprintf(card[5],"%s%s%s",l,"       ",l);
 			sprintf(card[6],"%s%s%s%s%s","\u2502 ",s,"   ",s," \u2502");
 			sprintf(card[7],"%s%s%s",l,"      7",l);

@@ -1,8 +1,12 @@
+// Austin Hester
+// deck.c
+// A deck of cards
 #include <stdlib.h>
 #include <time.h>
 #include "deck.h"
 #include "cards.h"
 
+// represents the lack of a card
 static card_t nocard = {0, 0};
 
 // shuffles deck 

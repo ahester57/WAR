@@ -1,3 +1,6 @@
+// Austin Hester
+// cards.c
+// contains character arrays that are cards
 #include <stdlib.h>
 #include <stdio.h>
 #include <strings.h>
@@ -33,11 +36,13 @@ char**
 getcard(card_t cnum)
 {
 	char **card;
-	if ((card = (char**)malloc(10*sizeof(char*))) == NULL)
+	card = (char**)malloc(10*sizeof(char*));
+	if (card == NULL)
 		return (void*)-1;
 	int i;
 	for (i = 0; i < 9; i++) {
-		if ((card[i] = (char*)malloc(56*sizeof(char))) == NULL)
+		card[i] = (char*)malloc(56*sizeof(char));
+		if (card[i] == NULL)
 			return (void*)-1;
 	}
 	char* s;

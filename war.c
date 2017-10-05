@@ -1,3 +1,6 @@
+// Austin Hester
+// war.c 
+// Plays war
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -6,14 +9,13 @@
 #include <time.h>
 #include "deck.h"
 
-// Austin Hester
-// WAR
 
 int war(card_t* p1, int* ncards1, card_t* p2, int* ncards2, int iter);
 int playwar(card_t* p1, card_t* p2);
 int predictwinner(card_t* p1, card_t* p2);
 int maxx(int a, int b);
 
+// represents the lack of a card
 static card_t nocard = {0, 0};
 
 int
@@ -21,9 +23,9 @@ main(int argc, char** argv)
 {
 	card_t cards[NUMCARDS];
 	card_t *p1, *p2;
-	if ((p1 = (card_t*)malloc(NUMCARDS*sizeof(card_t))) == (void*)NULL)
-		return 1;
-	if ((p2 = (card_t*)malloc(NUMCARDS*sizeof(card_t))) == (void*)NULL)
+	p1 = (card_t*)malloc(NUMCARDS*sizeof(card_t));
+	p2 = (card_t*)malloc(NUMCARDS*sizeof(card_t));
+	if (p1 == NULL || p2 == NULL)
 		return 1;
 	int i;
 	for (i = 0; i < NUMCARDS; i++) {
@@ -47,10 +49,12 @@ main(int argc, char** argv)
 	if (fp != NULL)
 		fprintf(fp, "%d\n", winner);
 	fclose(fp);
+	free(p1);
+	free(p2);
 	sleep(2);
 	return 0;
 }
-
+
 // start the game given 2 players, returns winner
 int
 playwar(card_t* p1, card_t* p2)
@@ -99,7 +103,7 @@ playwar(card_t* p1, card_t* p2)
 	}	
 	return 0;
 }
-
+
 // returns winner if game ends, else 0, -1 on "entire-deck war"
 int
 war(card_t* p1, int* ncards1, card_t* p2, int* ncards2, int iter)
